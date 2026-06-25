@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Focusly — Deep Work, Simplified</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #F7F6F3;
+      --ink:       #1A1A2E;
+      --indigo:    #5B4FE9;
+      --indigo-lt: #E8E6FF;
+      --slate:     #6B7080;
+      --white:     #FFFFFF;
+      --border:    #E2E1DC;
+      --font-display: 'Syne', sans-serif;
+      --font-body:    'Inter', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.1rem 5%;
+      background: rgba(247,246,243,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-family: var(--font-display);
+      font-weight: 800; font-size: 1.3rem;
+      color: var(--ink); text-decoration: none;
+      letter-spacing: -0.02em;
+    }
+    .nav-logo span { color: var(--indigo); }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      text-decoration: none; color: var(--slate);
+      font-size: 0.9rem; font-weight: 500;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--ink); }
+    .nav-cta {
+      background: var(--ink); color: var(--white);
+      padding: 0.55rem 1.3rem; border-radius: 100px;
+      text-decoration: none; font-size: 0.88rem; font-weight: 600;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .nav-cta:hover { background: var(--indigo); transform: translateY(-1px); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      gap: 0;
+      padding: 7rem 5% 4rem;
+      overflow: hidden;
+    }
+    .hero-text { max-width: 540px; }
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: var(--indigo-lt); color: var(--indigo);
+      font-size: 0.78rem; font-weight: 600; letter-spacing: 0.08em;
+      text-transform: uppercase; padding: 0.35rem 0.85rem;
+      border-radius: 100px; margin-bottom: 1.5rem;
+    }
+    .hero-eyebrow::before {
+      content: ''; width: 6px; height: 6px; border-radius: 50%;
+      background: var(--indigo); animation: pulse-dot 2s infinite;
+    }
+    @keyframes pulse-dot {
+      0%,100% { opacity:1; transform:scale(1); }
+      50% { opacity:0.5; transform:scale(0.7); }
+    }
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2.8rem, 5vw, 4.2rem);
+      font-weight: 800; line-height: 1.08;
+      letter-spacing: -0.03em; color: var(--ink);
+      margin-bottom: 1.4rem;
+    }
+    .hero h1 em {
+      font-style: normal; color: var(--indigo);
+      position: relative;
+    }
+    .hero h1 em::after {
+      content: '';
+      position: absolute; left: 0; bottom: 2px; right: 0;
+      height: 3px; background: var(--indigo); border-radius: 2px;
+      opacity: 0.3;
+    }
+    .hero-sub {
+      font-size: 1.1rem; color: var(--slate); line-height: 1.7;
+      margin-bottom: 2.2rem; max-width: 440px;
+    }
+    .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; }
+    .btn-primary {
+      background: var(--indigo); color: var(--white);
+      padding: 0.85rem 2rem; border-radius: 100px;
+      text-decoration: none; font-weight: 600; font-size: 0.95rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 20px rgba(91,79,233,0.35);
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(91,79,233,0.45); }
+    .btn-secondary {
+      color: var(--ink); text-decoration: none;
+      font-weight: 500; font-size: 0.95rem;
+      display: flex; align-items: center; gap: 0.4rem;
+      transition: gap 0.2s;
+    }
+    .btn-secondary:hover { gap: 0.7rem; }
+    .btn-secondary svg { transition: transform 0.2s; }
+    .btn-secondary:hover svg { transform: translateX(3px); }
+
+    .hero-social-proof {
+      margin-top: 2.5rem; display: flex; align-items: center; gap: 1rem;
+    }
+    .avatar-stack { display: flex; }
+    .avatar-stack img, .avatar-stack .av {
+      width: 34px; height: 34px; border-radius: 50%;
+      border: 2px solid var(--bg);
+      margin-left: -10px; background: var(--indigo-lt);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.7rem; font-weight: 700; color: var(--indigo);
+    }
+    .avatar-stack .av:first-child { margin-left: 0; }
+    .social-text { font-size: 0.82rem; color: var(--slate); }
+    .social-text strong { color: var(--ink); }
+
+    /* ── HERO VISUAL (right side) ── */
+    .hero-visual {
+      position: relative; display: flex;
+      align-items: center; justify-content: center;
+      height: 520px;
+    }
+    /* Signature element: the focus ring */
+    .focus-ring-wrap {
+      position: relative; width: 320px; height: 320px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .ring {
+      position: absolute; border-radius: 50%;
+      border: 2px solid var(--indigo);
+    }
+    .ring-1 { width: 320px; height: 320px; opacity: 0.12; animation: breathe 4s ease-in-out infinite; }
+    .ring-2 { width: 260px; height: 260px; opacity: 0.2; animation: breathe 4s ease-in-out infinite 0.6s; }
+    .ring-3 { width: 200px; height: 200px; opacity: 0.35; animation: breathe 4s ease-in-out infinite 1.2s; }
+    @keyframes breathe {
+      0%,100% { transform: scale(1); opacity: var(--op, 0.2); }
+      50% { transform: scale(1.06); opacity: calc(var(--op, 0.2) * 1.6); }
+    }
+    .ring-1 { --op: 0.12; }
+    .ring-2 { --op: 0.2; }
+    .ring-3 { --op: 0.35; }
+
+    .focus-core {
+      width: 140px; height: 140px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--indigo) 0%, #9B8FF5 100%);
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 12px 48px rgba(91,79,233,0.45);
+      position: relative; z-index: 2;
+    }
+    .focus-core svg { width: 52px; height: 52px; color: white; }
+
+    .stat-card {
+      position: absolute;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 0.9rem 1.2rem;
+      box-shadow: 0 4px 24px rgba(26,26,46,0.08);
+    }
+    .stat-card .label { font-size: 0.72rem; color: var(--slate); text-transform: uppercase; letter-spacing: 0.06em; }
+    .stat-card .value { font-family: var(--font-display); font-size: 1.5rem; font-weight: 800; color: var(--ink); line-height: 1.2; }
+    .stat-card .value span { color: var(--indigo); }
+    .stat-card-1 { top: 40px; right: -20px; animation: float1 5s ease-in-out infinite; }
+    .stat-card-2 { bottom: 60px; left: -30px; animation: float2 5s ease-in-out infinite 1.5s; }
+    @keyframes float1 { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-10px);} }
+    @keyframes float2 { 0%,100%{transform:translateY(0);} 50%{transform:translateY(8px);} }
+
+    /* ── LOGOS / TRUST ── */
+    .logos-bar {
+      padding: 2.5rem 5%;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .logos-inner {
+      display: flex; align-items: center; gap: 3rem; flex-wrap: wrap;
+    }
+    .logos-label { font-size: 0.78rem; color: var(--slate); text-transform: uppercase; letter-spacing: 0.1em; white-space: nowrap; }
+    .logo-items { display: flex; gap: 2.5rem; align-items: center; flex-wrap: wrap; }
+    .logo-item {
+      font-family: var(--font-display); font-weight: 700;
+      font-size: 1.1rem; color: var(--border);
+      letter-spacing: -0.02em; filter: grayscale(1); opacity: 0.55;
+      transition: opacity 0.2s;
+    }
+    .logo-item:hover { opacity: 0.85; }
+
+    /* ── FEATURES ── */
+    .features {
+      padding: 6rem 5%;
+    }
+    .section-header { text-align: center; max-width: 560px; margin: 0 auto 4rem; }
+    .section-eyebrow {
+      font-size: 0.78rem; font-weight: 600; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--indigo); margin-bottom: 0.8rem;
+    }
+    .section-header h2 {
+      font-family: var(--font-display); font-size: clamp(2rem, 3.5vw, 2.8rem);
+      font-weight: 800; letter-spacing: -0.03em; line-height: 1.15;
+      margin-bottom: 1rem;
+    }
+    .section-header p { color: var(--slate); font-size: 1.05rem; line-height: 1.7; }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr;
+      grid-template-rows: auto auto;
+      gap: 1.2rem;
+    }
+    .feat-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 2rem;
+      transition: transform 0.25s, box-shadow 0.25s;
+      cursor: default;
+    }
+    .feat-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(26,26,46,0.1);
+    }
+    .feat-card.large { grid-row: span 2; display: flex; flex-direction: column; }
+    .feat-icon {
+      width: 44px; height: 44px; border-radius: 12px;
+      background: var(--indigo-lt); display: flex;
+      align-items: center; justify-content: center;
+      margin-bottom: 1.2rem;
+      color: var(--indigo);
+    }
+    .feat-card h3 {
+      font-family: var(--font-display); font-size: 1.15rem;
+      font-weight: 700; margin-bottom: 0.6rem; letter-spacing: -0.02em;
+    }
+    .feat-card p { font-size: 0.9rem; color: var(--slate); line-height: 1.65; }
+
+    /* fake timer UI inside large card */
+    .timer-ui {
+      margin-top: auto; padding-top: 1.8rem;
+      display: flex; flex-direction: column; align-items: center;
+      gap: 1rem;
+    }
+    .timer-display {
+      font-family: var(--font-display); font-size: 3.5rem;
+      font-weight: 800; color: var(--ink); letter-spacing: -0.04em;
+    }
+    .timer-label { font-size: 0.78rem; color: var(--slate); text-transform: uppercase; letter-spacing: 0.08em; }
+    .timer-bar-wrap { width: 100%; height: 6px; background: var(--indigo-lt); border-radius: 100px; overflow: hidden; }
+    .timer-bar { height: 100%; width: 62%; background: var(--indigo); border-radius: 100px; animation: timer-fill 25s linear infinite; }
+    @keyframes timer-fill { from{width:0%} to{width:100%} }
+    .timer-actions { display: flex; gap: 0.8rem; }
+    .timer-btn {
+      border: none; border-radius: 100px; cursor: pointer;
+      font-family: var(--font-body); font-weight: 600; font-size: 0.82rem;
+      padding: 0.5rem 1.2rem; transition: opacity 0.2s;
+    }
+    .timer-btn.primary { background: var(--ink); color: var(--white); }
+    .timer-btn.secondary { background: var(--indigo-lt); color: var(--indigo); }
+    .timer-btn:hover { opacity: 0.8; }
+
+    /* ── HOW IT WORKS ── */
+    .how {
+      padding: 6rem 5%;
+      background: var(--ink); color: var(--white);
+    }
+    .how .section-eyebrow { color: #9B8FF5; }
+    .how .section-header h2 { color: var(--white); }
+    .how .section-header p { color: rgba(255,255,255,0.55); }
+
+    .steps { display: grid; grid-template-columns: repeat(3,1fr); gap: 2rem; margin-top: 3rem; }
+    .step {
+      padding: 2rem; border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 20px; position: relative;
+      transition: border-color 0.25s, background 0.25s;
+    }
+    .step:hover { border-color: rgba(91,79,233,0.5); background: rgba(91,79,233,0.05); }
+    .step-num {
+      font-family: var(--font-display); font-size: 3rem;
+      font-weight: 800; color: rgba(91,79,233,0.25);
+      line-height: 1; margin-bottom: 1rem; letter-spacing: -0.04em;
+    }
+    .step h3 { font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; margin-bottom: 0.6rem; }
+    .step p { font-size: 0.9rem; color: rgba(255,255,255,0.55); line-height: 1.65; }
+
+    /* connector line */
+    .steps { position: relative; }
+    .steps::before {
+      content: '';
+      position: absolute; top: 3.5rem; left: calc(33.33% - 1rem); right: calc(33.33% - 1rem);
+      height: 1px; background: linear-gradient(90deg, transparent, rgba(91,79,233,0.4), transparent);
+      pointer-events: none;
+    }
+
+    /* ── TESTIMONIALS ── */
+    .testimonials { padding: 6rem 5%; }
+    .testi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; }
+    .testi-card {
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: 20px; padding: 1.8rem;
+      transition: transform 0.25s;
+    }
+    .testi-card:hover { transform: translateY(-3px); }
+    .testi-stars { color: var(--indigo); font-size: 0.85rem; margin-bottom: 1rem; letter-spacing: 0.1em; }
+    .testi-quote { font-size: 0.95rem; line-height: 1.7; color: var(--ink); margin-bottom: 1.4rem; }
+    .testi-author { display: flex; align-items: center; gap: 0.75rem; }
+    .testi-av {
+      width: 38px; height: 38px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--indigo), #9B8FF5);
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 0.85rem; color: var(--white);
+    }
+    .testi-name { font-weight: 600; font-size: 0.88rem; }
+    .testi-role { font-size: 0.78rem; color: var(--slate); }
+
+    /* ── PRICING ── */
+    .pricing { padding: 6rem 5%; background: var(--indigo-lt); }
+    .plans { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.2rem; margin-top: 3rem; }
+    .plan-card {
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: 20px; padding: 2rem;
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+    .plan-card.featured {
+      background: var(--ink); border-color: var(--ink);
+      transform: scale(1.03);
+      box-shadow: 0 20px 60px rgba(26,26,46,0.25);
+    }
+    .plan-card:not(.featured):hover { transform: translateY(-4px); box-shadow: 0 8px 32px rgba(26,26,46,0.1); }
+    .plan-badge {
+      display: inline-block; background: var(--indigo);
+      color: var(--white); font-size: 0.7rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.08em;
+      padding: 0.25rem 0.7rem; border-radius: 100px; margin-bottom: 1rem;
+    }
+    .plan-name { font-family: var(--font-display); font-size: 1.05rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .plan-card.featured .plan-name { color: var(--white); }
+    .plan-price {
+      font-family: var(--font-display); font-size: 2.6rem;
+      font-weight: 800; letter-spacing: -0.04em; margin: 0.8rem 0;
+    }
+    .plan-card.featured .plan-price { color: var(--white); }
+    .plan-price sup { font-size: 1.2rem; vertical-align: super; }
+    .plan-price sub { font-size: 0.9rem; font-weight: 400; color: var(--slate); }
+    .plan-card.featured .plan-price sub { color: rgba(255,255,255,0.5); }
+    .plan-desc { font-size: 0.85rem; color: var(--slate); margin-bottom: 1.4rem; }
+    .plan-card.featured .plan-desc { color: rgba(255,255,255,0.5); }
+    .plan-features { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; margin-bottom: 1.8rem; }
+    .plan-features li {
+      font-size: 0.88rem; color: var(--slate);
+      display: flex; align-items: center; gap: 0.55rem;
+    }
+    .plan-card.featured .plan-features li { color: rgba(255,255,255,0.7); }
+    .plan-features li::before {
+      content: '✓'; color: var(--indigo); font-weight: 700; font-size: 0.8rem;
+      flex-shrink: 0;
+    }
+    .plan-card.featured .plan-features li::before { color: #9B8FF5; }
+    .plan-btn {
+      display: block; text-align: center; text-decoration: none;
+      padding: 0.75rem 1rem; border-radius: 100px;
+      font-weight: 600; font-size: 0.9rem;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    .plan-btn:hover { opacity: 0.85; transform: translateY(-1px); }
+    .plan-btn.primary { background: var(--indigo); color: var(--white); }
+    .plan-btn.outline { border: 1.5px solid var(--border); color: var(--ink); }
+    .plan-btn.featured-btn { background: var(--white); color: var(--ink); }
+
+    /* ── CTA BANNER ── */
+    .cta-banner {
+      padding: 5rem 5%; text-align: center;
+      background: linear-gradient(135deg, var(--indigo) 0%, #3B30C8 100%);
+    }
+    .cta-banner h2 {
+      font-family: var(--font-display); font-size: clamp(2rem,4vw,3rem);
+      font-weight: 800; color: var(--white); letter-spacing: -0.03em;
+      margin-bottom: 1rem;
+    }
+    .cta-banner p { color: rgba(255,255,255,0.7); font-size: 1.05rem; margin-bottom: 2rem; }
+    .btn-white {
+      background: var(--white); color: var(--indigo);
+      padding: 0.9rem 2.2rem; border-radius: 100px;
+      text-decoration: none; font-weight: 700; font-size: 1rem;
+      display: inline-block;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .btn-white:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,0,0,0.25); }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 3.5rem 5% 2.5rem;
+      border-top: 1px solid var(--border);
+      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 3rem;
+    }
+    .footer-brand .nav-logo { font-size: 1.2rem; display: block; margin-bottom: 0.8rem; }
+    .footer-brand p { font-size: 0.85rem; color: var(--slate); line-height: 1.6; max-width: 240px; }
+    .footer-col h4 {
+      font-family: var(--font-display); font-size: 0.82rem;
+      font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em;
+      color: var(--ink); margin-bottom: 1rem;
+    }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.55rem; }
+    .footer-col a { text-decoration: none; font-size: 0.88rem; color: var(--slate); transition: color 0.2s; }
+    .footer-col a:hover { color: var(--ink); }
+    .footer-bottom {
+      padding: 1.5rem 5%;
+      border-top: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .footer-bottom p { font-size: 0.82rem; color: var(--slate); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; padding-top: 8rem; text-align: center; }
+      .hero-text { max-width: 100%; }
+      .hero-sub { max-width: 100%; }
+      .hero-actions { justify-content: center; }
+      .hero-social-proof { justify-content: center; }
+      .hero-visual { height: 280px; margin-top: 2rem; }
+      .focus-ring-wrap { width: 220px; height: 220px; }
+      .ring-1 { width: 220px; height: 220px; }
+      .ring-2 { width: 175px; height: 175px; }
+      .ring-3 { width: 130px; height: 130px; }
+      .focus-core { width: 95px; height: 95px; }
+      .stat-card-1 { right: 0; }
+      .stat-card-2 { left: 0; }
+      .features-grid { grid-template-columns: 1fr 1fr; }
+      .feat-card.large { grid-column: span 2; grid-row: span 1; }
+      .steps { grid-template-columns: 1fr; }
+      .steps::before { display: none; }
+      .testi-grid { grid-template-columns: 1fr; }
+      .plans { grid-template-columns: 1fr; }
+      .plan-card.featured { transform: none; }
+      footer { grid-template-columns: 1fr 1fr; }
+      .nav-links { display: none; }
+    }
+    @media (max-width: 600px) {
+      .features-grid { grid-template-columns: 1fr; }
+      .feat-card.large { grid-column: span 1; }
+      footer { grid-template-columns: 1fr; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.01ms !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#" class="nav-logo">Focus<span>ly</span></a>
+    <ul class="nav-links">
+      <li><a href="#features">Features</a></li>
+      <li><a href="#how">How it works</a></li>
+      <li><a href="#pricing">Pricing</a></li>
+    </ul>
+    <a href="#pricing" class="nav-cta">Start free</a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-text">
+      <div class="hero-eyebrow">Now in public beta</div>
+      <h1>Deep work,<br><em>without</em> the<br>mental noise.</h1>
+      <p class="hero-sub">Focusly combines a Pomodoro timer, distraction blocker, and daily intention log — so every session actually moves the needle.</p>
+      <div class="hero-actions">
+        <a href="#pricing" class="btn-primary">Get started free</a>
+        <a href="#how" class="btn-secondary">
+          See how it works
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+      </div>
+      <div class="hero-social-proof">
+        <div class="avatar-stack">
+          <div class="av">AK</div>
+          <div class="av">TR</div>
+          <div class="av">MJ</div>
+          <div class="av">S+</div>
+        </div>
+        <p class="social-text"><strong>2,400+ makers</strong> shipped faster this month</p>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <div class="focus-ring-wrap">
+        <div class="ring ring-1"></div>
+        <div class="ring ring-2"></div>
+        <div class="ring ring-3"></div>
+        <div class="focus-core">
+          <!-- Target/focus icon -->
+          <svg viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="26" cy="26" r="18" stroke="white" stroke-width="2.5"/>
+            <circle cx="26" cy="26" r="10" stroke="white" stroke-width="2.5"/>
+            <circle cx="26" cy="26" r="3" fill="white"/>
+            <line x1="26" y1="4" x2="26" y2="12" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="26" y1="40" x2="26" y2="48" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="4" y1="26" x2="12" y2="26" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="40" y1="26" x2="48" y2="26" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+      </div>
+      <div class="stat-card stat-card-1">
+        <div class="label">Focus Score</div>
+        <div class="value"><span>94</span>/100</div>
+      </div>
+      <div class="stat-card stat-card-2">
+        <div class="label">Hours saved</div>
+        <div class="value"><span>12.4</span>h</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LOGOS -->
+  <div class="logos-bar">
+    <div class="logos-inner">
+      <span class="logos-label">Trusted by teams at</span>
+      <div class="logo-items">
+        <span class="logo-item">Notion</span>
+        <span class="logo-item">Linear</span>
+        <span class="logo-item">Vercel</span>
+        <span class="logo-item">Figma</span>
+        <span class="logo-item">Stripe</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- FEATURES -->
+  <section class="features" id="features">
+    <div class="section-header">
+      <div class="section-eyebrow">Features</div>
+      <h2>Everything a focused mind needs</h2>
+      <p>No bloat, no distractions built into the tool meant to remove them. Just the right primitives.</p>
+    </div>
+    <div class="features-grid">
+
+      <div class="feat-card large">
+        <div class="feat-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <h3>Pomodoro Timer</h3>
+        <p>Classic 25/5 rhythm or custom intervals. Focusly's timer is distraction-free, keyboard-driven, and always one keystroke away.</p>
+        <div class="timer-ui">
+          <div class="timer-label">Current session</div>
+          <div class="timer-display">18:32</div>
+          <div class="timer-bar-wrap"><div class="timer-bar"></div></div>
+          <div class="timer-actions">
+            <button class="timer-btn primary">Pause</button>
+            <button class="timer-btn secondary">Skip</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="feat-card">
+        <div class="feat-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+        </div>
+        <h3>Site Blocker</h3>
+        <p>Block any website during focus blocks. Social media, news feeds, or that one tab you always drift to.</p>
+      </div>
+
+      <div class="feat-card">
+        <div class="feat-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+        </div>
+        <h3>Daily Intention Log</h3>
+        <p>Set one clear goal each morning. Revisit it mid-day. End the day with what you actually shipped.</p>
+      </div>
+
+      <div class="feat-card">
+        <div class="feat-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        </div>
+        <h3>Focus Analytics</h3>
+        <p>Weekly heatmaps show when you're sharpest. Reschedule deep work to your peak hours automatically.</p>
+      </div>
+
+      <div class="feat-card">
+        <div class="feat-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <h3>Team Flow</h3>
+        <p>See who's in a focus session on your team. Silently respect their time. Ping when they surface.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="how" id="how">
+    <div class="section-header">
+      <div class="section-eyebrow">How it works</div>
+      <h2>Three steps to a sharper day</h2>
+      <p>No onboarding wizard. No thirty-screen tour. Start your first session in under a minute.</p>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">01</div>
+        <h3>Set your intention</h3>
+        <p>Write one sentence: what does "done" look like today? That single sentence becomes the anchor for your whole session.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <h3>Start a focus block</h3>
+        <p>Hit start. The timer runs, the blocker activates, and all other tabs go quiet. Your only job is the work in front of you.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <h3>Review and improve</h3>
+        <p>After each session, log what you shipped. Over time, Focusly surfaces the patterns behind your best days.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="testimonials">
+    <div class="section-header">
+      <div class="section-eyebrow">Testimonials</div>
+      <h2>From people who get things done</h2>
+    </div>
+    <div class="testi-grid">
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-quote">"I've tried every productivity app. Focusly is the first one that doesn't feel like another task to manage. The focus ring alone changed how I start my mornings."</p>
+        <div class="testi-author">
+          <div class="testi-av">AK</div>
+          <div><div class="testi-name">Arjun Kapoor</div><div class="testi-role">Software Engineer, Bangalore</div></div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-quote">"The daily intention log is deceptively powerful. Writing one sentence in the morning makes me 3x more deliberate about what I actually spend time on."</p>
+        <div class="testi-author">
+          <div class="testi-av">TL</div>
+          <div><div class="testi-name">Tara Lin</div><div class="testi-role">Product Designer, Remote</div></div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-quote">"We rolled it out to the whole eng team. Async-first culture improved overnight. Everyone could see when to interrupt and when to let someone cook."</p>
+        <div class="testi-author">
+          <div class="testi-av">MJ</div>
+          <div><div class="testi-name">Marcus Johnson</div><div class="testi-role">Engineering Lead, London</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section class="pricing" id="pricing">
+    <div class="section-header">
+      <div class="section-eyebrow">Pricing</div>
+      <h2>Simple, honest pricing</h2>
+      <p>No annual lock-in surprises. Start free, upgrade when it's worth it.</p>
+    </div>
+    <div class="plans">
+      <div class="plan-card">
+        <div class="plan-name">Starter</div>
+        <div class="plan-price"><sup>$</sup>0<sub>/month</sub></div>
+        <p class="plan-desc">For individuals getting started with focused work.</p>
+        <ul class="plan-features">
+          <li>Pomodoro timer (25/5)</li>
+          <li>Daily intention log</li>
+          <li>7-day history</li>
+          <li>3 blocked sites</li>
+        </ul>
+        <a href="#" class="plan-btn outline">Get started free</a>
+      </div>
+      <div class="plan-card featured">
+        <div class="plan-badge">Most popular</div>
+        <div class="plan-name">Pro</div>
+        <div class="plan-price"><sup>$</sup>9<sub>/month</sub></div>
+        <p class="plan-desc">For makers who want deep insights and full control.</p>
+        <ul class="plan-features">
+          <li>Custom timer intervals</li>
+          <li>Unlimited blocked sites</li>
+          <li>Focus analytics & heatmaps</li>
+          <li>90-day history</li>
+          <li>Calendar sync</li>
+        </ul>
+        <a href="#" class="plan-btn featured-btn">Start 14-day trial</a>
+      </div>
+      <div class="plan-card">
+        <div class="plan-name">Team</div>
+        <div class="plan-price"><sup>$</sup>19<sub>/mo per seat</sub></div>
+        <p class="plan-desc">For teams that respect each other's deep work time.</p>
+        <ul class="plan-features">
+          <li>Everything in Pro</li>
+          <li>Team flow visibility</li>
+          <li>Admin dashboard</li>
+          <li>Slack integration</li>
+          <li>Priority support</li>
+        </ul>
+        <a href="#" class="plan-btn primary">Try Team free</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA BANNER -->
+  <section class="cta-banner">
+    <h2>Your best work is one session away.</h2>
+    <p>Join 2,400+ makers who've stopped fighting distraction and started finishing things.</p>
+    <a href="#" class="btn-white">Start for free — no card needed</a>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-brand">
+      <a href="#" class="nav-logo">Focus<span>ly</span></a>
+      <p>Deep work, simplified. For makers, engineers, and anyone who wants their hours to mean something.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Product</h4>
+      <ul>
+        <li><a href="#">Features</a></li>
+        <li><a href="#">Pricing</a></li>
+        <li><a href="#">Changelog</a></li>
+        <li><a href="#">Roadmap</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Blog</a></li>
+        <li><a href="#">Careers</a></li>
+        <li><a href="#">Press</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Legal</h4>
+      <ul>
+        <li><a href="#">Privacy</a></li>
+        <li><a href="#">Terms</a></li>
+        <li><a href="#">Security</a></li>
+        <li><a href="#">Cookies</a></li>
+      </ul>
+    </div>
+  </footer>
+  <div class="footer-bottom">
+    <p>© 2026 Focusly, Inc. All rights reserved.</p>
+    <p style="font-size:0.82rem;color:var(--slate);">Made for people who ship.</p>
+  </div>
+
+</body>
+</html>
